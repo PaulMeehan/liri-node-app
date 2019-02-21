@@ -2,6 +2,7 @@ require("dotenv").config();
 var moment = require("moment");
 var axios = require("axios");
 var keys = require("./keys.js");
+var fs = require("fs");
 
 // var spotify = new Spotify(keys.spotify);
 var Spotify = require('node-spotify-api');
@@ -65,6 +66,9 @@ switch (toBeRun) {
     case "movie-this":
         console.log("movie info");
         var movieTitle = params.slice(1).join("+");
+        if (movieTitle.length === 0) {
+            movieTitle = "Mr.+Nobody";
+        }
         console.log("title=" + movieTitle);
         axios.get("http://www.omdbapi.com/?plot=short&r=json&apikey=8009e607&t=" + movieTitle + "&").then(function (response) {
             console.log(response.data);
@@ -88,6 +92,12 @@ switch (toBeRun) {
 
     case "do-what-it-says":
         console.log("could be anything");
+        fs.readFile("./random.txt", "utf8", function(err, results){
+            if (err) {
+                return console.log("something wrong here");
+            };
+            console.log(results);
+        })
         break;
         
     default:
