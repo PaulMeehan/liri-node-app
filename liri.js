@@ -4,7 +4,7 @@ var axios = require("axios");
 var keys = require("./keys.js");
 
 // var spotify = new Spotify(keys.spotify);
-var Spotify = require("node-spotify-api");
+var Spotify = require('node-spotify-api');
 
 var params = process.argv.slice(2);
 
@@ -41,15 +41,49 @@ switch (toBeRun) {
 
     case "spotify-this-song":
         console.log("spotify info");
-        axios.get("https://api.spotify.com/v1").then(function (response) {
-            console.log(response.data)
-        }).catch(function (error) {
-            console.log(error);
+
+        var spotify = new Spotify({
+
         });
+
+        // spotify.search({type: 'track', query: 'Rocket Man'}, function (err, results) {
+        //     if (err) {
+        //         return console.log("Error: " + err);
+        //     }
+
+        //     console.log ("results: " + results);
+        // });
+
+
+        // axios.get("https://api.spotify.com/v1").then(function (response) {
+        //     console.log(response.data)
+        // }).catch(function (error) {
+        //     console.log(error);
+        // });
         break;
 
     case "movie-this":
         console.log("movie info");
+        var movieTitle = params.slice(1).join("+");
+        console.log("title=" + movieTitle);
+        axios.get("http://www.omdbapi.com/?plot=short&r=json&apikey=8009e607&t=" + movieTitle + "&").then(function (response) {
+            console.log(response.data);
+            console.log("\r\n\r\n");
+            console.log("Title: " + response.data.Title);
+            console.log("Year released: " + response.data.Year);
+            console.log("IMDB Rating: " + response.data.imdbRating);
+            console.log("Rotten Tomatoes Rating: " + response.data.Ratings[1].Value);
+            console.log("Country where produced: " + response.data.Country);
+            console.log("Language: " + response.data.Language);
+            console.log("Plot: " + response.data.Plot);
+            console.log("Actors: " + response.data.Actors);
+            
+        }).catch(function (error) {
+            console.log("Error here:" + error);
+        });
+        
+
+
         break;
 
     case "do-what-it-says":
